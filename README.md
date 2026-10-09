@@ -21,7 +21,7 @@ make run
 That builds `Snap.app`, copies it to `/Applications`, and launches it. On first launch, grant it
 **System Settings → Privacy & Security → Accessibility**. Turn on "Launch at Login" from the menu bar icon.
 
-> Builds are ad-hoc signed, so after rebuilding you may need to remove and re-add Snap in the Accessibility list.
+> If a code-signing identity named "Kevin Local Code Signing" exists, builds are signed with it so the Accessibility permission survives rebuilds. Otherwise builds are ad-hoc signed and you may need to remove and re-add Snap in the Accessibility list after rebuilding.
 
 ## License
 

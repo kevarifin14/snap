@@ -1,5 +1,9 @@
 APP := build/Snap.app
 
+# Sign with a stable local identity if present (keeps macOS permissions across rebuilds), else ad-hoc.
+# Create it with dotfiles/scripts/make-signing-cert.sh
+SIGN_ID := $(shell security find-identity -p codesigning | grep -q "Kevin Local Code Signing" && echo "Kevin Local Code Signing" || echo -)
+
 .PHONY: build install run clean icon
 
 build:
@@ -10,7 +14,7 @@ build:
 	cp Info.plist $(APP)/Contents/Info.plist
 	mkdir -p $(APP)/Contents/Resources
 	cp Assets/AppIcon.icns $(APP)/Contents/Resources/
-	codesign --force --sign - $(APP)
+	codesign --force --sign "$(SIGN_ID)" $(APP)
 
 install: build
 	rm -rf /Applications/Snap.app

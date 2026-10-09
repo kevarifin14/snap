@@ -1,3 +1,5 @@
+<p align="center"><img src="Assets/icon.png" width="160" alt="Snap icon"></p>
+
 # Snap
 
 A tiny, dependency-free macOS window snapper. One Swift file, ~150 lines.

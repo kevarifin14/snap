@@ -3,7 +3,7 @@ set -euo pipefail
 
 source_app=$1
 installed=/Applications/Snap.app
-requirement='identifier "com.kevin.snap" and anchor apple generic and certificate leaf[subject.OU] = "2YE6RDKXDW" and certificate leaf[subject.CN] = "Apple Development: Kevin Arifin (9D2HDH9PJG)"'
+requirement=$2
 
 verify() { codesign --verify --strict -R="$requirement" "$1"; }
 code_hash() { codesign -dv --verbose=4 "$1" 2>&1 | sed -n 's/^CDHash=//p'; }

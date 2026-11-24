@@ -33,8 +33,12 @@ Accessibility**. In Snap’s menu bar menu, turn on **Launch at Login**. Snap us
 the macOS login item for the main app. To register it on first launch from a
 shell, use `open -a /Applications/Snap.app --args --register-login`.
 
-The installed app reports both settings as JSON when you run
-`/Applications/Snap.app/Contents/MacOS/Snap --status`.
+To check Accessibility and login registration from a terminal, launch the
+installed app through macOS so the status reflects Snap’s own permissions.
+
+```sh
+open -gn -o "$(tty)" -a /Applications/Snap.app --args --status
+```
 
 ## License
 

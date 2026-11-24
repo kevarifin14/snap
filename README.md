@@ -16,9 +16,7 @@ Snap moves the focused window. It uses the screen that contains the window’s c
 
 On Winstain, run `make build` with the Xcode Command Line Tools and the pinned
 Apple Development identity. The universal build is `build/Snap.app`. Updates use
-bundle ID `com.kevin.snap`, team `KZN65U2K58`, and the same designated requirement.
-If you granted Accessibility to an earlier Snap build on team `2YE6RDKXDW`,
-grant it again after installing 0.1.2.
+bundle ID `com.kevin.snap`, team `2YE6RDKXDW`, and the same designated requirement.
 
 On each Mac, quit Snap from its menu if it’s running. From the Snap checkout,
 install the bundle signed on Winstain and open it.

@@ -1,9 +1,9 @@
 APP := build/Snap.app
 
 # Apple Development identity on Winstain.
-override SIGN_ID := 6E6BDEA7A7BE0B9FD0543E3D4BEA1807C806A8B2
-override SIGN_TEAM := KZN65U2K58
-override SIGN_REQUIREMENT := identifier "com.kevin.snap" and anchor apple generic and certificate leaf[subject.OU] = "$(SIGN_TEAM)" and certificate leaf[subject.CN] = "Apple Development: hello@kevinarifin.com (65C96R4MUW)"
+override SIGN_ID := A204907BEC17B7A8707D0A3257B34DE48769AAA8
+override SIGN_TEAM := 2YE6RDKXDW
+override SIGN_REQUIREMENT := identifier "com.kevin.snap" and anchor apple generic and certificate leaf[subject.OU] = "$(SIGN_TEAM)" and certificate leaf[subject.CN] = "Apple Development: Kevin Arifin (9D2HDH9PJG)"
 
 .PHONY: build install run clean icon
 

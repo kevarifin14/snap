@@ -98,6 +98,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let loginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLogin), keyEquivalent: "")
 
     func applicationDidFinishLaunching(_ note: Notification) {
+        if CommandLine.arguments.contains("--register-login"), SMAppService.mainApp.status != .enabled {
+            setLogin(enabled: true)
+        }
+
         let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
         AXIsProcessTrustedWithOptions(opts)
         registerHotKeys()
@@ -117,12 +121,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func toggleLogin() {
-        do {
-            if SMAppService.mainApp.status == .enabled { try SMAppService.mainApp.unregister() }
-            else { try SMAppService.mainApp.register() }
-        } catch { NSLog("Snap: login item error: \(error)") }
+        setLogin(enabled: SMAppService.mainApp.status != .enabled)
         loginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
     }
+
+    private func setLogin(enabled: Bool) {
+        do {
+            if enabled { try SMAppService.mainApp.register() }
+            else { try SMAppService.mainApp.unregister() }
+        } catch { NSLog("Snap: login item error: \(error)") }
+    }
+}
+
+if CommandLine.arguments.contains("--status") {
+    let status = ["accessibility": AXIsProcessTrusted(), "launch_at_login": SMAppService.mainApp.status == .enabled]
+    let data = try JSONSerialization.data(withJSONObject: status, options: [.sortedKeys])
+    print(String(decoding: data, as: UTF8.self))
+    exit(0)
 }
 
 let app = NSApplication.shared

@@ -1,12 +1,13 @@
 APP := build/Snap.app
 
-# Sign with a stable local identity if present (keeps macOS permissions across rebuilds), else ad-hoc.
-# Create it with dotfiles/scripts/make-signing-cert.sh
-SIGN_ID := $(shell security find-identity -p codesigning | grep -q "Kevin Local Code Signing" && echo "Kevin Local Code Signing" || echo -)
+# Apple Development: Kevin Arifin (9D2HDH9PJG), team 2YE6RDKXDW, on Winstain.
+override SIGN_ID := A204907BEC17B7A8707D0A3257B34DE48769AAA8
 
 .PHONY: build install run clean icon
 
 build:
+	@security find-identity -v -p codesigning | grep -Eq '^[[:space:]]*[0-9]+\) $(SIGN_ID) "Apple Development:' || \
+		{ echo 'Snap needs the pinned Apple Development identity on Winstain.' >&2; exit 1; }
 	mkdir -p $(APP)/Contents/MacOS
 	swiftc -O -target arm64-apple-macos13 -o build/Snap-arm64 Sources/*.swift
 	swiftc -O -target x86_64-apple-macos13 -o build/Snap-x86_64 Sources/*.swift
@@ -14,13 +15,14 @@ build:
 	cp Info.plist $(APP)/Contents/Info.plist
 	mkdir -p $(APP)/Contents/Resources
 	cp Assets/AppIcon.icns $(APP)/Contents/Resources/
-	codesign --force --sign "$(SIGN_ID)" $(APP)
+	codesign --force --sign "$(SIGN_ID)" --timestamp=none --options runtime $(APP)
+	codesign --verify --strict $(APP)
 
-install: build
-	rm -rf /Applications/Snap.app
-	cp -R $(APP) /Applications/Snap.app
+install:
+	/bin/bash Scripts/install.sh "$(APP)"
 
-run: install
+run: build
+	$(MAKE) install
 	open /Applications/Snap.app
 
 clean:

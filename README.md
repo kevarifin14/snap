@@ -2,26 +2,39 @@
 
 # Snap
 
-A tiny, dependency-free macOS window snapper. One Swift file, ~150 lines.
+A menu bar app for snapping windows on macOS 13 and later.
 
 | Shortcut | Action |
 | --- | --- |
-| `⌃⌥←` | Left half |
-| `⌃⌥→` | Right half |
-| `⌃⌥↑` | Maximize |
+| `⌃⌥←` (Control–Option–Left) | Fill the left half of the screen’s usable area |
+| `⌃⌥→` (Control–Option–Right) | Fill the right half of the screen’s usable area |
+| `⌃⌥↑` (Control–Option–Up) | Fill the screen’s usable area |
+
+Snap moves the focused window. It uses the screen that contains the window’s center and respects the menu bar and Dock. Maximize resizes the window in place.
 
 ## Install
 
-Requires Xcode Command Line Tools (`xcode-select --install`).
+On Winstain, run `make build` with the Xcode Command Line Tools and the pinned
+Apple Development identity. The universal build is `build/Snap.app`. Updates use
+bundle ID `com.kevin.snap`, team `2YE6RDKXDW`, and the same designated requirement.
+
+On each Mac, quit Snap from its menu if it’s running. From the Snap checkout,
+install the bundle signed on Winstain and open it.
 
 ```sh
-make run
+make install APP=/path/to/Snap.app
+open /Applications/Snap.app
 ```
 
-That builds `Snap.app`, copies it to `/Applications`, and launches it. On first launch, grant it
-**System Settings → Privacy & Security → Accessibility**. Turn on "Launch at Login" from the menu bar icon.
+On Winstain, `make run` builds, installs, and launches the app in one step.
 
-> If a code-signing identity named "Kevin Local Code Signing" exists, builds are signed with it so the Accessibility permission survives rebuilds. Otherwise builds are ad-hoc signed and you may need to remove and re-add Snap in the Accessibility list after rebuilding.
+On each Mac, turn on **Snap** in **System Settings → Privacy & Security →
+Accessibility**. In Snap’s menu bar menu, turn on **Launch at Login**. Snap uses
+the macOS login item for the main app. To register it on first launch from a
+shell, use `open -a /Applications/Snap.app --args --register-login`.
+
+The installed app reports both settings as JSON when you run
+`/Applications/Snap.app/Contents/MacOS/Snap --status`.
 
 ## License
 
